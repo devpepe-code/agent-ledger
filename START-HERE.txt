@@ -1,0 +1,49 @@
+================================================================================
+  AgentLedger — folder to upload to GitHub
+================================================================================
+
+WHERE THIS FOLDER IS:
+  Desktop → AgentLedger-UPLOAD-TO-GITHUB
+
+WHAT’S INSIDE:
+  All source code (app/, components/, lib/, etc.) needed for Next.js + Vercel.
+  NO node_modules, NO .next (you reinstall / rebuild after clone).
+
+WHAT WAS REMOVED ON PURPOSE:
+  • node_modules  → run: npm ci
+  • .next           → run: npm run build
+  • .git            → you connect this folder to YOUR GitHub repo (see below)
+  • .env / .env.local → never upload secrets; copy .env.example to .env.local locally
+
+--------------------------------------------------------------------------------
+OPTION A — GitHub website (simple)
+--------------------------------------------------------------------------------
+  1. GitHub.com → New repository → name it (e.g. agent-ledger) → Create (empty, no README).
+
+  2. On your Mac, open Terminal and run (replace YOUR_USERNAME and REPO if needed):
+
+     cd ~/Desktop/AgentLedger-UPLOAD-TO-GITHUB
+     git init
+     git branch -M main
+     git add .
+     git commit -m "Initial commit: AgentLedger full app"
+     git remote add origin https://github.com/YOUR_USERNAME/REPO.git
+     git push -u origin main
+
+  3. If GitHub already has commits you must replace, ask before force-pushing.
+
+--------------------------------------------------------------------------------
+OPTION B — GitHub Desktop
+--------------------------------------------------------------------------------
+  1. File → Add Local Repository → Choose: Desktop/AgentLedger-UPLOAD-TO-GITHUB
+     (If it says "not a repo", create repository there with "Create repository".)
+
+  2. Publish repository → pick GitHub account and repo name → Publish.
+
+--------------------------------------------------------------------------------
+AFTER IT’S ON GITHUB — Vercel
+--------------------------------------------------------------------------------
+  • Import the repo; Root Directory: leave blank (repo root IS the app).
+  • Add env vars from .env.example (at least NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID for wallets).
+
+================================================================================

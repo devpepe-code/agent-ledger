@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+    --background: 240 30% 8%;
+    --foreground: 210 20% 98%;
+    --card: 240 28% 13%;
+    --ledger-purple: #7c3aed;
+    --ledger-cyan: #06b6d4;
+    --ledger-green: #10b981;
+    --ledger-red: #ef4444;
+    --ledger-focus-ring: #22d3ee;
+    --ledger-focus-offset: #0f0f1a;
+  }
+
+  html {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-[#0F0F1A] text-white font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-sans font-semibold tracking-tight text-balance;
+  }
+
+  p {
+    @apply text-pretty;
+  }
+
+  /* Keyboard / a11y: visible focus on in-content links (buttons use component ring) */
+  a:focus-visible {
+    @apply rounded outline-none ring-2 ring-[#22d3ee] ring-offset-2 ring-offset-[#0F0F1A];
+  }
+
+}
+
+@layer utilities {
+  .font-mono-ledger {
+    font-family: var(--font-mono), ui-monospace, monospace;
+  }
+}

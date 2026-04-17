@@ -6,17 +6,12 @@ function isEvmAddress(s: string): boolean {
   return /^0x[a-fA-F0-9]{40}$/.test(s);
 }
 
-/** Base58 Solana public key length is typically 32–44 chars. */
-function isSolanaAddress(s: string): boolean {
-  return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(s);
-}
-
 /**
- * Sets session cookie when at least one wallet address is present and valid.
+ * Sets session cookie when a valid EVM address is present.
  * (Demo gate — replace with signature verification / SIWE later.)
  */
 export async function POST(request: Request) {
-  let body: { evmAddress?: string | null; solanaAddress?: string | null } = {};
+  let body: { evmAddress?: string | null } = {};
   try {
     body = await request.json();
   } catch {
@@ -24,15 +19,11 @@ export async function POST(request: Request) {
   }
 
   const evmRaw = body.evmAddress != null ? String(body.evmAddress).trim() : "";
-  const solRaw =
-    body.solanaAddress != null ? String(body.solanaAddress).trim() : "";
-
   const evm = evmRaw && isEvmAddress(evmRaw) ? evmRaw : null;
-  const sol = solRaw && isSolanaAddress(solRaw) ? solRaw : null;
 
-  if (!evm && !sol) {
+  if (!evm) {
     return NextResponse.json(
-      { error: "Connect an Ethereum or Solana wallet." },
+      { error: "Connect an Ethereum wallet on Base." },
       { status: 400 },
     );
   }

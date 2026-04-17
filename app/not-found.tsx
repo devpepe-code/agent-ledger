@@ -7,7 +7,7 @@ export default function NotFound() {
     <div
       className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 font-sans"
       style={{
-        backgroundColor: "#0F0F1A",
+        backgroundColor: "var(--bg-base)",
         color: "#f8fafc",
         minHeight: "100vh",
       }}

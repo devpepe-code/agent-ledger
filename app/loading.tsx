@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 export default function RootLoading(): ReactElement {
   return (
     <div
-      className="flex min-h-screen flex-col items-center justify-center gap-3 bg-[#0F0F1A] px-4"
+      className="flex min-h-screen flex-col items-center justify-center gap-3 bg-[var(--bg-base)] px-4"
       aria-busy
       aria-label="Loading"
     >

@@ -16,7 +16,7 @@ export default function DashboardError({
   }, [error]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[#0F0F1A] px-6 text-center text-white">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[var(--bg-base)] px-6 text-center text-white">
       <p className="text-lg font-semibold">Something went wrong loading the dashboard</p>
       <p className="max-w-md text-sm text-white/55">
         {error.message || "Try refreshing the page. If it keeps happening, run a clean dev server."}

@@ -1,4 +1,4 @@
-/** Short display for EVM (0x…) or Solana (base58) addresses. */
+/** Short display for EVM (0x…) addresses. */
 export function shortenAddress(addr: string, edge = 4): string {
   const t = addr.trim();
   if (!t) return "";

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { DASHBOARD_LINK_NEW_TAB, DASHBOARD_MAIN_HREF } from "@/lib/auth";
 import {
   Card,
   CardContent,
@@ -129,7 +130,12 @@ export function AgentCompaniesDirectory({
                           Ledger-ready
                         </span>
                         <Button variant="ghost" size="sm" className="h-8 text-xs" asChild>
-                          <Link href="/dashboard">Open dashboard</Link>
+                          <Link
+                            href={DASHBOARD_MAIN_HREF}
+                            {...DASHBOARD_LINK_NEW_TAB}
+                          >
+                            Open dashboard
+                          </Link>
                         </Button>
                       </>
                     ) : null}

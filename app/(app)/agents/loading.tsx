@@ -2,7 +2,11 @@ export default function AgentsLoading() {
   return (
     <div
       className="flex min-h-[60vh] flex-col items-center justify-center gap-3 px-4"
-      style={{ backgroundColor: "#0F0F1A", color: "#f8fafc", minHeight: "100vh" }}
+      style={{
+        backgroundColor: "var(--bg-base)",
+        color: "#f8fafc",
+        minHeight: "100vh",
+      }}
       aria-busy
       aria-label="Loading agents"
     >

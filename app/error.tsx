@@ -19,7 +19,7 @@ export default function Error({
     <div
       className="flex min-h-screen flex-col gap-6 px-6 py-16 font-sans"
       style={{
-        backgroundColor: "#0F0F1A",
+        backgroundColor: "var(--bg-base)",
         color: "#f8fafc",
         minHeight: "100vh",
       }}
@@ -37,6 +37,12 @@ export default function Error({
           npm run dev:clean
         </code>
       </p>
+      {process.env.NODE_ENV === "development" ? (
+        <pre className="max-w-2xl overflow-x-auto rounded-lg border border-white/10 bg-black/30 p-3 text-left text-xs text-red-300/95">
+          {error.message}
+          {error.digest ? `\n(digest ${error.digest})` : ""}
+        </pre>
+      ) : null}
       <button
         type="button"
         onClick={() => reset()}

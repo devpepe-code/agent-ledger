@@ -3,7 +3,7 @@ import type { ReactElement } from "react";
 export default function AlertsLoading(): ReactElement {
   return (
     <div
-      className="flex min-h-[50vh] flex-col items-center justify-center gap-3 bg-[#0F0F1A] px-4"
+      className="flex min-h-[50vh] flex-col items-center justify-center gap-3 bg-[var(--bg-base)] px-4"
       aria-busy
       aria-label="Loading safety feed"
     >

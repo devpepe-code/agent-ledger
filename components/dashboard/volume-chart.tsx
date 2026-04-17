@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 type Point = { day: string; count: number };
 
 function formatDay(ts: number) {
-  return new Intl.DateTimeFormat(undefined, {
+  return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
   }).format(new Date(ts * 1000));
@@ -40,7 +40,7 @@ export function VolumeChart({
           </CardTitle>
           <p className="text-sm text-white/50">
             How much your agents did over the last couple of weeks — each point is
-            real work that was recorded, not “chain volume” for its own sake.
+            real economic activity that was recorded.
           </p>
         </CardHeader>
         <CardContent className="h-[260px] min-h-0 pb-4">
@@ -97,7 +97,7 @@ export function VolumeChart({
                 labelStyle={{ color: "rgba(255,255,255,0.65)" }}
                 formatter={(value) => [
                   typeof value === "number"
-                    ? `${value.toLocaleString()} things recorded`
+                    ? `${value.toLocaleString("en-US")} things recorded`
                     : "—",
                   "That day",
                 ]}

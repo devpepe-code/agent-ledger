@@ -1,24 +1,21 @@
 "use client";
 
-import { useWallet } from "@solana/wallet-adapter-react";
 import { useEffect, useRef, useState } from "react";
 import { useAccount } from "wagmi";
 
 /**
- * When the user connects EVM or Solana in the dashboard shell, POST to session API
+ * When the user connects an EVM wallet in the dashboard shell, POST to session API
  * and reload. Mounted once under `(app)` Web3 providers.
  */
 export function WalletSessionSync() {
   const { address, isConnected } = useAccount();
-  const { publicKey, connected } = useWallet();
   const [error, setError] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
   const busy = useRef(false);
 
   useEffect(() => {
     const evm = isConnected && address ? address : null;
-    const sol = connected && publicKey ? publicKey.toBase58() : null;
-    if (!evm && !sol) return;
+    if (!evm) return;
     if (busy.current) return;
     busy.current = true;
     setError(null);
@@ -28,10 +25,7 @@ export function WalletSessionSync() {
         const res = await fetch("/api/auth/wallet", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            evmAddress: evm,
-            solanaAddress: sol,
-          }),
+          body: JSON.stringify({ evmAddress: evm }),
         });
         if (res.ok) {
           window.location.assign("/dashboard");
@@ -47,7 +41,7 @@ export function WalletSessionSync() {
         setSyncing(false);
       }
     })();
-  }, [isConnected, address, connected, publicKey]);
+  }, [isConnected, address]);
 
   if (!syncing && !error) return null;
 

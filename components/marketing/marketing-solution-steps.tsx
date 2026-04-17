@@ -1,67 +1,113 @@
-import { Bot, Eye, Lock } from "lucide-react";
+import Link from "next/link";
 
-export const marketingSolutionSteps = [
+import { buttonVariants } from "@/components/ui/button";
+import { DASHBOARD_LINK_NEW_TAB, DASHBOARD_MAIN_HREF } from "@/lib/auth";
+import { cn } from "@/lib/utils";
+
+import { SectionEyebrow } from "./section-eyebrow";
+
+const STEPS = [
   {
-    n: "1",
-    title: "Your agent acts",
-    icon: Bot,
-    body: "Your AI agent makes a decision, calls an API, sends a message, or triggers an automation. AgentLedger captures it instantly.",
+    id: "01",
+    file: "step_01",
+    title: "Your agent acts.",
+    body: (
+      <>
+        Every decision, transaction, API call, and message your agent sends is
+        captured the moment it happens. Compatible with any agent framework.
+        Nothing to configure.
+      </>
+    ),
+    mono: "// LangChain · AutoGen · CrewAI · x402 · REST",
   },
   {
-    n: "2",
-    title: "We seal it permanently",
-    icon: Lock,
-    body: "Every event gets a cryptographic fingerprint and is anchored on Solana. Once recorded, nobody — not even us — can change it.",
+    id: "02",
+    file: "step_02",
+    title: "The record is sealed.",
+    body: (
+      <>
+        A cryptographic fingerprint is generated and committed permanently.
+        Immutable. Independently verifiable. Nobody — including us — can alter
+        it.
+      </>
+    ),
+    mono: "// SHA-256 · tamper-evident · permanently onchain",
   },
   {
-    n: "3",
-    title: "You see everything",
-    icon: Eye,
-    body: "Your dashboard shows every event in plain language. Need proof for legal, regulators, or investors? It's one click away.",
+    id: "03",
+    file: "step_03",
+    title: "Your agent earns trust.",
+    body: (
+      <>
+        Every verified action builds your agent&apos;s behavioral record —
+        its reputation in the agentic economy. Share it with clients,
+        counterparties, regulators, or anyone who needs proof.
+      </>
+    ),
+    mono: "// Trust Score · behavioral history · audit export",
   },
 ] as const;
 
-/** Solution intro + 3-step grid — lives under the hero headline. */
-export function MarketingSolutionHeroBlock() {
+export function MarketingHowItWorksSection() {
   return (
-    <div
+    <section
       id="how-it-works"
-      className="mt-10 w-full max-w-6xl scroll-mt-28 sm:mt-14 md:mt-16"
+      className="scroll-mt-24 border-t border-white/[0.06] py-12 sm:py-16"
+      style={{ backgroundColor: "var(--bg-base)" }}
     >
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="text-2xl font-extrabold leading-snug tracking-tight text-white sm:text-3xl md:text-4xl">
-          A permanent record of everything
-          <br />
-          your agents do.
+      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+        <SectionEyebrow>{"// how_it_works.md"}</SectionEyebrow>
+        <h2 className="mt-4 text-section text-white">
+          From anonymous agent to trusted economic actor.
         </h2>
-      </div>
+        <p className="mt-4 text-lg text-white/55">Three steps. Automatic.</p>
 
-      <div className="relative mt-10 grid gap-10 sm:mt-12 md:grid-cols-3 md:gap-6">
-        <div className="pointer-events-none absolute left-[12%] right-[12%] top-9 hidden h-0 border-t border-dashed border-white/15 md:block lg:left-[16%] lg:right-[16%] lg:top-10" />
-
-        {marketingSolutionSteps.map((step) => (
+        <div className="relative mt-10 pl-2 sm:pl-4">
           <div
-            key={step.n}
-            className="relative flex flex-col items-center text-center"
+            className="absolute bottom-6 left-[19px] top-6 w-px bg-white/20 sm:left-[21px]"
+            aria-hidden
+          />
+          <ul className="relative space-y-8">
+            {STEPS.map((step) => (
+              <li key={step.id} className="relative pl-12 sm:pl-14">
+                <span
+                  className="absolute left-2 top-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-white/40 bg-[var(--bg-base)] sm:left-3 sm:h-4 sm:w-4"
+                  aria-hidden
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
+                </span>
+                <p className="font-mono text-[11px] text-[#06B6D4]/80">
+                  {"// "}
+                  {step.file}
+                </p>
+                <h3 className="mt-1 text-xl font-bold text-white sm:text-2xl">
+                  {step.id}. {step.title}
+                </h3>
+                <p className="mt-3 text-base leading-relaxed text-white/65">
+                  {step.body}
+                </p>
+                <p className="mt-3 font-mono text-[11px] text-white/40">
+                  {step.mono}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-14">
+          <Link
+            href={DASHBOARD_MAIN_HREF}
+            prefetch={false}
+            {...DASHBOARD_LINK_NEW_TAB}
+            className={cn(
+              buttonVariants({ variant: "primary", size: "lg" }),
+              "inline-flex min-h-[48px] w-full justify-center sm:w-auto",
+            )}
           >
-            <div className="relative z-10 mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-[#7C3AED]/30 to-[#06B6D4]/20 shadow-lg sm:mb-5 sm:h-14 sm:w-14">
-              <step.icon
-                className="h-5 w-5 text-white sm:h-6 sm:w-6"
-                strokeWidth={1.75}
-              />
-            </div>
-            <span className="mb-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-xs font-bold text-white sm:h-8 sm:w-8 sm:text-sm">
-              {step.n}
-            </span>
-            <h3 className="text-base font-semibold text-white sm:text-lg">
-              {step.title}
-            </h3>
-            <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/55 sm:mt-3">
-              {step.body}
-            </p>
-          </div>
-        ))}
+            Open Dashboard →
+          </Link>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

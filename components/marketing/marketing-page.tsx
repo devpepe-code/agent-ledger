@@ -1,19 +1,33 @@
+import { MarketingFaq } from "./marketing-faq";
 import { MarketingHero } from "./marketing-hero";
+import { MarketingHowItWorksSection } from "./marketing-solution-steps";
+import { MarketingMidCta } from "./marketing-mid-cta";
 import { MarketingNav } from "./marketing-nav";
-import { MarketingPricingAndFooter } from "./marketing-pricing-footer";
-import { MarketingProblem } from "./marketing-problem";
+import { MarketingFooter } from "./marketing-pricing-footer";
+import { MarketingProblemStats } from "./marketing-problem-stats";
+import { CursorGlow } from "./cursor-glow";
+import { SectionDivider } from "./section-divider";
 
-/** Mostly server-rendered; only `MarketingNav` hydrates client JS for scroll + mobile menu. */
 export function MarketingPage() {
   return (
     <div
-      className="min-h-screen bg-[#0F0F1A] text-white"
-      style={{ backgroundColor: "#0F0F1A", color: "#ffffff", minHeight: "100vh" }}
+      className="relative min-h-screen min-w-0 overflow-x-clip text-white"
+      style={{ backgroundColor: "var(--bg-base)", minHeight: "100vh" }}
     >
-      <MarketingNav />
-      <MarketingHero />
-      <MarketingProblem />
-      <MarketingPricingAndFooter />
+      <CursorGlow />
+      <div className="relative z-[2]">
+        <MarketingNav />
+        <MarketingHero />
+        <SectionDivider />
+        <MarketingProblemStats />
+        <SectionDivider />
+        <MarketingHowItWorksSection />
+        <SectionDivider />
+        <MarketingMidCta />
+        <SectionDivider />
+        <MarketingFaq />
+        <MarketingFooter />
+      </div>
     </div>
   );
 }

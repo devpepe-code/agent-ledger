@@ -3,13 +3,13 @@ import type { Metadata } from "next";
 import { MarketingPage } from "@/components/marketing/marketing-page";
 
 export const metadata: Metadata = {
-  title: "AgentLedger — Proof for every AI agent action",
+  title: "AgentLedger — Trust Layer for the Agentic Economy",
   description:
-    "Your AI agents are making decisions right now — and you have zero proof of what they did. AgentLedger records everything permanently and tamper-proof.",
+    "AI agents are now economic actors — they transact, decide, and operate autonomously at scale. AgentLedger gives every agent a permanent, verifiable behavioral record. The accountability infrastructure the agentic economy needs.",
   openGraph: {
-    title: "AgentLedger — Proof for every AI agent action",
+    title: "AgentLedger — Trust Layer for the Agentic Economy",
     description:
-      "Permanent, tamper-proof records of what your AI agents do. Solana-anchored. EU AI Act ready.",
+      "Permanent, verifiable behavioral records for AI agents in the agentic economy. Trust infrastructure for autonomous systems.",
   },
 };
 
@@ -19,7 +19,7 @@ export default function HomePage() {
       className="min-h-screen"
       style={{
         minHeight: "100vh",
-        backgroundColor: "#0F0F1A",
+        backgroundColor: "var(--bg-base)",
         color: "#ffffff",
       }}
     >

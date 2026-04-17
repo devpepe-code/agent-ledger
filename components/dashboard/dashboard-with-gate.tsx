@@ -19,7 +19,7 @@ export function DashboardWithGate({
   return (
     <div
       className="relative min-h-screen"
-      style={{ backgroundColor: "#0F0F1A", minHeight: "100vh" }}
+      style={{ backgroundColor: "var(--bg-base)", minHeight: "100vh" }}
     >
       <div
         className={

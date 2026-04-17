@@ -1,0 +1,35 @@
+AgentLedger — fresh copy from your working tree
+==============================================
+
+This folder was created without node_modules or .next (you install/build fresh).
+
+1) Open a terminal and go here:
+   cd ~/Desktop/AgentLedger-latest
+
+2) Use Node 20.x (recommended). Check: node -v
+
+3) Install dependencies:
+   npm ci
+   (or: npm install)
+
+4) Environment:
+   - Copy .env from your old agent-ledger folder if you have one:
+     cp ~/Desktop/agent-ledger/.env ~/Desktop/AgentLedger-latest/.env
+   - Or start from .env.example:
+     cp .env.example .env
+   - Edit .env and set values (see README.md / lib/env.ts).
+
+5) Run the dev server:
+   npm run dev
+   Open http://localhost:3000
+
+6) Optional checks:
+   npm run build
+   npm test
+
+Git (optional):
+  git status
+  git remote -v
+  If you add a GitHub remote later:
+  git remote add origin <your-repo-url>
+  git push -u origin main

@@ -2,30 +2,43 @@
 
 import dynamic from "next/dynamic";
 
-import { ErrorBoundary } from "@/components/error-boundary";
 import type { OwnerDashboardPayload } from "@/lib/mock/types";
 import {
   buildHeroNarrative,
   computeWellbeing,
 } from "@/lib/mock/narrative";
 
-import { AgentGrid } from "./agent-grid";
 import { DailyDigest } from "./daily-digest";
+import { DashboardEmptyAgents } from "./dashboard-empty-agents";
+import { DemoWorkspaceBanner } from "./demo-workspace-banner";
 import { HeroNarrative } from "./hero-narrative";
-import { SiteHeader, type DashboardSessionKind } from "./site-header";
+import {
+  SiteHeader,
+  type DashboardLiveStatus,
+  type DashboardSessionKind,
+} from "./site-header";
 import { WellbeingStrip } from "./wellbeing-strip";
 
-const VolumeChart = dynamic(
-  () => import("./volume-chart").then((m) => m.VolumeChart),
+const DashboardPerformanceSection = dynamic(
+  () =>
+    import("./dashboard-performance-section").then(
+      (m) => m.DashboardPerformanceSection,
+    ),
   {
     ssr: false,
     loading: () => (
-      <div
-        className="flex h-[320px] min-h-[320px] items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] text-sm text-white/45"
-        aria-hidden
-      >
-        Loading chart…
-      </div>
+      <section className="space-y-5" aria-hidden>
+        <div className="space-y-2">
+          <div className="h-7 w-44 animate-pulse rounded bg-white/10" />
+          <div className="h-4 max-w-xl animate-pulse rounded bg-white/[0.06]" />
+        </div>
+        <div className="grid gap-6 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <div className="h-[320px] min-h-[320px] animate-pulse rounded-2xl border border-white/10 bg-white/[0.04]" />
+          </div>
+          <div className="h-[320px] min-h-[320px] animate-pulse rounded-xl border border-white/10 bg-white/[0.04] lg:h-auto" />
+        </div>
+      </section>
     ),
   },
 );
@@ -33,15 +46,17 @@ const VolumeChart = dynamic(
 function Shell({
   children,
   sessionKind,
+  liveStatus,
 }: {
   children: React.ReactNode;
   sessionKind: DashboardSessionKind;
+  liveStatus?: DashboardLiveStatus | null;
 }) {
   return (
     <div
-      className="relative min-h-screen overflow-x-hidden bg-gradient-to-br from-[#0F0F1A] via-[#0D1117] to-[#0F0F1A] text-white"
+      className="relative min-h-screen overflow-x-hidden bg-gradient-to-br from-[var(--bg-base)] via-[#0D1117] to-[var(--bg-base)] text-white"
       style={{
-        backgroundColor: "#0F0F1A",
+        backgroundColor: "var(--bg-base)",
         color: "#f8fafc",
         minHeight: "100vh",
       }}
@@ -52,7 +67,7 @@ function Shell({
           backgroundImage: `
             radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124, 58, 237, 0.22), transparent),
             radial-gradient(ellipse 60% 40% at 100% 0%, rgba(6, 182, 212, 0.12), transparent),
-            linear-gradient(to bottom, transparent, #0F0F1A)
+            linear-gradient(to bottom, transparent, var(--bg-base))
           `,
         }}
       />
@@ -64,7 +79,7 @@ function Shell({
           backgroundSize: "48px 48px",
         }}
       />
-      <SiteHeader sessionKind={sessionKind} />
+      <SiteHeader sessionKind={sessionKind} liveStatus={liveStatus} />
       <main className="relative mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
         {children}
       </main>
@@ -81,19 +96,37 @@ export function DashboardPage({
 }) {
   const hero = buildHeroNarrative(payload);
   const wellbeing = computeWellbeing(payload.recentEvents);
+  const hasAgents = payload.agents.length > 0;
   const blocksWeek = payload.recentEvents.filter((e) => e.type === "safety_block")
     .length;
   const verifiedWeek = payload.recentEvents.filter(
     (e) => e.verificationStatus === "verified",
   ).length;
   const actionSum = payload.eventVolumeByDay.reduce((s, d) => s + d.count, 0);
+  const lastDayCount =
+    payload.eventVolumeByDay[payload.eventVolumeByDay.length - 1]?.count ?? 0;
+  const openIncidents = payload.recentEvents.filter(
+    (e) => e.verificationStatus === "challenge_open",
+  ).length;
+  const liveStatus: DashboardLiveStatus = {
+    agentCount: payload.agents.length,
+    eventsToday: lastDayCount,
+    incidents: openIncidents,
+    tone:
+      hero.tone === "critical"
+        ? "critical"
+        : hero.tone === "watch"
+          ? "warning"
+          : "ok",
+  };
 
   return (
-    <Shell sessionKind={sessionKind}>
+    <Shell sessionKind={sessionKind} liveStatus={liveStatus}>
       <div className="space-y-10">
+        {sessionKind === "simulated" ? <DemoWorkspaceBanner /> : null}
         <section className="max-w-4xl space-y-3">
           <h1 className="text-sm font-medium text-white/55">
-            See what your AI agents actually did — and prove it when it matters.
+            Every agent action in the agentic economy — with a record you can verify.
           </h1>
         </section>
 
@@ -101,40 +134,41 @@ export function DashboardPage({
           headline={hero.headline}
           tone={hero.tone}
           highlight={hero.highlight}
+          primaryLink={hero.primaryLink}
         />
 
         <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
             <p className="text-xs font-medium uppercase tracking-wider text-white/40">
-              Actions anchored (sample window)
+              Events in this chart window
             </p>
             <p className="mt-2 text-2xl font-semibold tabular-nums text-white">
-              {actionSum.toLocaleString()}
+              {hasAgents ? actionSum.toLocaleString("en-US") : "0"}
             </p>
             <p className="mt-1 text-xs text-white/45">
-              Everything your agents did that hit the ledger in this chart range.
+              Actions your agents logged into AgentLedger across the displayed range.
             </p>
           </div>
           <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
             <p className="text-xs font-medium uppercase tracking-wider text-white/40">
-              Verified receipts
+              Verified records
             </p>
             <p className="mt-2 text-2xl font-semibold tabular-nums text-[#6ee7b7]">
-              {verifiedWeek}
+              {hasAgents ? verifiedWeek : 0}
             </p>
             <p className="mt-1 text-xs text-white/45">
-              In today&apos;s digest sample — ready for audit or customer evidence.
+              Sealed with cryptographic proof — ready for audit or customer evidence.
             </p>
           </div>
           <div className="rounded-xl border border-amber-500/20 bg-amber-500/[0.06] p-4">
             <p className="text-xs font-medium uppercase tracking-wider text-amber-200/70">
-              Guardrail stops
+              Safety blocks
             </p>
             <p className="mt-2 text-2xl font-semibold tabular-nums text-amber-100">
-              {blocksWeek}
+              {hasAgents ? blocksWeek : 0}
             </p>
             <p className="mt-1 text-xs text-white/55">
-              Policy or safety blocks before harm reached customers or regulators.
+              Guardrails stopped risky steps before they reached customers or regulators.
             </p>
           </div>
           <div className="rounded-xl border border-[#7C3AED]/25 bg-[#7C3AED]/[0.08] p-4">
@@ -150,32 +184,21 @@ export function DashboardPage({
           </div>
         </section>
 
-        <WellbeingStrip level={wellbeing} />
+        <WellbeingStrip level={wellbeing} agents={payload.agents} />
 
         <DailyDigest events={payload.recentEvents} agents={payload.agents} />
 
-        <section className="space-y-5">
-          <div>
-            <h2 className="text-xl font-semibold tracking-tight text-white">
-              Show me the full picture
-            </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/55">
-              Trends and team view for when you want more detail — still without
-              drowning you in infrastructure jargon up front.
-            </p>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            <div className="lg:col-span-2">
-              <ErrorBoundary>
-                <VolumeChart data={payload.eventVolumeByDay} />
-              </ErrorBoundary>
-            </div>
-            <AgentGrid agents={payload.agents} />
-          </div>
-        </section>
+        {!hasAgents ? <DashboardEmptyAgents /> : null}
+
+        {hasAgents ? (
+          <DashboardPerformanceSection
+            eventVolumeByDay={payload.eventVolumeByDay}
+            agents={payload.agents}
+          />
+        ) : null}
 
         <footer className="border-t border-white/10 pt-8 text-center text-xs text-white/40">
-          AgentLedger — sample data for demonstration
+          AgentLedger — trust layer for the agentic economy
         </footer>
       </div>
     </Shell>

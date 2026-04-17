@@ -17,7 +17,7 @@ export default function GlobalError({
         style={{
           margin: 0,
           minHeight: "100vh",
-          backgroundColor: "#0F0F1A",
+          backgroundColor: "#0a0a0f",
           color: "#f8fafc",
           fontFamily: "system-ui, sans-serif",
           padding: 24,

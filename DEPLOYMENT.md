@@ -17,9 +17,8 @@ Set in **Project → Settings → Environment Variables** (Production + Preview 
 | `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID` | Strongly recommended | Real ID for WalletConnect in production |
 | `NEXT_PUBLIC_APP_URL` | Recommended | `https://your-domain.vercel.app` or custom domain (no trailing slash) |
 | `NEXT_PUBLIC_APP_ENV` | Optional | `production` in prod |
-| `NEXT_PUBLIC_SOLANA_RPC_URL` | Optional | Defaults to public devnet RPC |
-| `NEXT_PUBLIC_SOLANA_NETWORK` | Optional | `devnet` or `mainnet-beta` |
-| `NEXT_PUBLIC_SOLSCAN_URL` | Optional | Default `https://solscan.io` |
+| `NEXT_PUBLIC_BASE_RPC_URL` | Optional | Default `https://mainnet.base.org` |
+| `NEXT_PUBLIC_BASESCAN_URL` | Optional | Default `https://basescan.org` |
 | `NEXT_PUBLIC_IPFS_GATEWAY` | Optional | Default `https://ipfs.io/ipfs` |
 | `NEXT_PUBLIC_DEMO_MODE` | Optional | Default on unless set to `false` |
 | `NEXT_PUBLIC_ENABLE_REAL_WALLET` | Optional | Default on unless set to `false` |
